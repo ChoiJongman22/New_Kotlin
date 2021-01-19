@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/app_background"
+    tools:context=".DataList">
+
+    <Button
+        android:id="@+id/logo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/transparent"
+        android:text="STARTUF"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"/>
+
+    <RelativeLayout
+        android:id="@+id/list_search"
+        android:layout_below="@id/logo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+   >
+
+        <ImageButton
+            android:id="@+id/etc_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+            android:src="@drawable/menubutton"
+            android:layout_marginLeft="10dp"
+            android:layout_alignParentRight="true"/>
+
+        <ImageButton
+            android:id="@+id/search_button"
+            android:layout_toLeftOf="@id/etc_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/searchbutton"
+            android:layout_marginTop="5dp"
+            android:layout_marginRight="10dp"
+            android:adjustViewBounds="true"
+            android:scaleType="centerInside"
+           />
+
+        <EditText
+            android:layout_toLeftOf="@id/search_button"
+            android:id="@+id/et_id"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="검색"
+            android:textSize="10pt"
+            android:textStyle="bold"
+            />
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_below="@id/list_search"
+        android:id="@+id/recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="490dp"
+        tools:listitem="@layout/recylcerview_id_add">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+
+    <ImageView
+        android:id="@+id/homebtn"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/transparent"
+        android:src="@drawable/homebutton"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+
+</RelativeLayout>
+
+
+
