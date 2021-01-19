@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment
 import com.jongman22.basicstudy.databinding.ActivityRecommendationRecyclerBinding
 
 
-class RecomFragment:Fragment(R.layout.recommendation_list) {
+class RecomFragment:Fragment(R.layout.activity_recommendation_recycler) {
     private var binding1:ActivityRecommendationRecyclerBinding?=null
 
 
@@ -28,7 +28,7 @@ class RecomFragment:Fragment(R.layout.recommendation_list) {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.recommendation_list,container,false)
+        return inflater.inflate(R.layout.activity_recommendation_recycler,container,false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

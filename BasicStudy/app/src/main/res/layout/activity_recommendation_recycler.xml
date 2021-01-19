@@ -12,6 +12,7 @@
         android:background="#FFEEBA"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="65dp"
-        tools:layout_editor_absoluteY="61dp" />
+        tools:layout_editor_absoluteY="61dp"
+        tools:listitem="@layout/recommendation_list"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item android:drawable="@color/white"/>
+    <item>
+        <bitmap
+            android:src="@drawable/start_uf"
+            android:gravity="center"/>
+        //글자 추가, 비트맵 이미지 크기 변경?
+    </item>
+</layer-list>
