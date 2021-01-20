@@ -9,22 +9,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.IDMemoList">
-        <activity android:name=".UserinforEdit"></activity>
+        <activity android:name=".AppPassWordMain"></activity>
+        <activity android:name=".AppLockDial" />
+
         <activity android:name=".UserpwCopy" />
         <activity android:name=".DataListEdit" />
         <activity android:name=".DataList" />
         <activity android:name=".CategoryEdit" />
-        <activity android:name=".Category">
-
-        </activity>
-        <activity android:name=".Start">
-        </activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".Category" />
+        <activity android:name=".Start"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity android:name=".MainActivity">
+
         </activity>
     </application>
 
