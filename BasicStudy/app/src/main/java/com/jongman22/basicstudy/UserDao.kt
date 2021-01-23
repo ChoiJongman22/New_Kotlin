@@ -18,7 +18,4 @@ interface UserDao {
     fun insertAll(vararg users:User)
     @Delete
     fun delete(user:User)
-
-
-
 }

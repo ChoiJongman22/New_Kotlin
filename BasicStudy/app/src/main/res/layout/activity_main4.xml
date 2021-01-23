@@ -8,7 +8,6 @@
         <variable
             name="viewModel"
             type="com.jongman22.basicstudy.SecondViewModel" />
-
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

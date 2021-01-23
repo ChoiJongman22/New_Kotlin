@@ -17,6 +17,14 @@ class AppPassWordMain : AppCompatActivity() {
 
         init()
 
+        binding.btnLogin.setOnClickListener {
+            val intent = Intent(this, MainActivity::class.java).apply {
+                putExtra(AppLockConst.type, AppLockConst.ENABLE_PASSLOCK)
+            }
+            startActivityForResult(intent, AppLockConst.ENABLE_PASSLOCK)
+        }
+
+
         binding.btnSetLock.setOnClickListener {
             val intent = Intent(this, AppLockDial::class.java).apply {
                 putExtra(AppLockConst.type, AppLockConst.ENABLE_PASSLOCK)
@@ -57,14 +65,15 @@ class AppPassWordMain : AppCompatActivity() {
                     Toast.makeText(this, "암호 변경 됨", Toast.LENGTH_SHORT).show()
                     lock = false
                 }
-            AppLockConst.UNLOCK_PASSWORD ->
+            AppLockConst.UNLOCK_PASSWORD -> {
                 if (resultCode == Activity.RESULT_OK) {
                     Toast.makeText(this, "잠금 해제 됨", Toast.LENGTH_SHORT).show()
                     lock = false
                 }
+            }
+
         }
     }
-
     override fun onStart() {
         super.onStart()
         if (lock && AppLock(this).isPassLockSet()) {
@@ -73,8 +82,8 @@ class AppPassWordMain : AppCompatActivity() {
             }
             startActivityForResult(intent, AppLockConst.UNLOCK_PASSWORD)
         }
-
     }
+
 
     override fun onPause() {
         super.onPause()

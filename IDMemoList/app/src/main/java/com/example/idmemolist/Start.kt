@@ -9,8 +9,10 @@ class Start : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         SystemClock.sleep(300)
-        val intent = Intent(this,AppPassWordMain::class.java)
+        val intent = Intent(this,MainActivity::class.java)
         startActivity(intent)
         finish()
     }
+
+
 }
