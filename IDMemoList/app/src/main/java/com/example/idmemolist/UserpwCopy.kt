@@ -40,6 +40,7 @@ class UserpwCopy : AppCompatActivity() {
                 try {
                     val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, currentImageUrl)
                     binding.imageView3.setImageBitmap(bitmap)
+
                 } catch (e: Exception) {
                     e.printStackTrace()
                 }

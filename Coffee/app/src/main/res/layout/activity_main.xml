@@ -24,6 +24,7 @@
         android:layout_marginStart="48dp"
         android:layout_marginTop="144dp"
         android:ems="10"
+        app:rippleColor="#6BEA54"
         android:hint="ID를 입력하세요"
         android:inputType="textPersonName"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,7 +38,7 @@
         android:layout_marginTop="44dp"
         android:ems="10"
         android:hint="비밀번호를 입력하세요."
-        android:inputType="textPersonName"
+        android:inputType="numberPassword"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName" />
 

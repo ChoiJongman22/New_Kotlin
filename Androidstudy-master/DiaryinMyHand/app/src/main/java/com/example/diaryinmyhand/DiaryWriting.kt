@@ -39,15 +39,7 @@ import kotlin.concurrent.timer
 
 class DiaryWriting : AppCompatActivity() {
 
-    private lateinit var viewModel: CameraViewModel
-
-
-    // file that store a captured image from camera
-    private var imageFile: File? = null
-
-    private val takePhoto = 111
-    private val takeGallery = 222
-
+    private val OPEN_GALLERY=1
     private lateinit var binding: ActivityDiaryWritingBinding
 
 
@@ -58,9 +50,7 @@ class DiaryWriting : AppCompatActivity() {
         val view = binding.root
         setContentView(view)
 
-        viewModel = ViewModelProvider(viewModelStore, CameraViewModelFactory(application)).get(
-            CameraViewModel::class.java
-        )
+
 
 
         binding.Back.setOnClickListener {
@@ -73,150 +63,40 @@ class DiaryWriting : AppCompatActivity() {
             startActivity(intent1)
         }
         binding.Picture.setOnClickListener {
+            openGallery()
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                callGallery()
-            } else
-                checkCameraPermission(ImageType.GALLERY)
         }
 
     }
 
-    private fun callCamera() {
-        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
-            // Ensure that there's a camera activity to handle the intent
-            takePictureIntent.resolveActivity(packageManager)?.also {
-                // Launch camera app only when image file exists
-                try {
-                    // create a file to contain photos to be taken with the camera
-                    imageFile = viewModel.createImageFile(this)
-
-                    val imageUri =
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N)
-                            FileProvider.getUriForFile(
-                                this,
-                                BuildConfig.APPLICATION_ID + ".provider",
-                                imageFile!!
-                            )
-                        else
-                            Uri.fromFile(imageFile)
-
-                    // launch camera app
-                    takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri)
-                    startActivityForResult(takePictureIntent, takePhoto)
-
-                } catch (e: IOException) {
-                    imageFile = null
-                    Log.e("LOG>>", "IOException while creating file : $e")
-                } catch (e: Exception) {
-                    imageFile = null
-                    Log.e("LOG>>", "Exception while creating file : $e")
-                }
-
-            }
-        }
+    private fun openGallery()
+    {
+        val intent: Intent = Intent(Intent.ACTION_GET_CONTENT)
+        intent.setType("image/*")
+        startActivityForResult(intent, OPEN_GALLERY)
     }
 
-    private fun callGallery() {
-        val intent = Intent()
-        intent.type = "image/*"
-        intent.action = Intent.ACTION_GET_CONTENT
-        startActivityForResult(intent, takeGallery)
-    }
-
-    @RequiresApi(Build.VERSION_CODES.KITKAT)
+    @Override
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
-        when (requestCode) {
-            // After taking a picture
-            takePhoto -> {
-                if (imageFile == null) {
-                    Log.e("LOG>>", "After taking a picture, imageFile null. ....")
-                    return
-                }
-                if (resultCode != Activity.RESULT_OK) {
-                    return
-                }
+        if (resultCode == Activity.RESULT_OK) {
+            if (requestCode == OPEN_GALLERY) {
+                var currentImageUrl: Uri? = data?.data
 
-                Glide.with(this).load(imageFile).centerCrop().into(binding.imageContent)
+                try {
+                    val bitmap = MediaStore.Images.Media.getBitmap(contentResolver, currentImageUrl)
+                    binding.imageContent.setImageBitmap(bitmap)
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                    Thread(Runnable {
-                        // convert image file to bitmap using Glide
-                        // description : http://bumptech.github.io/glide/doc/getting-started.html#background-threads
-                        val futureTarget: FutureTarget<Bitmap> = Glide.with(this)
-                            .asBitmap()
-                            .load(imageFile)
-                            .centerCrop()
-                            .submit()
-
-                        // save bitmap to gallery
-                        if (viewModel.savePhotoAndroidQ(futureTarget.get()) == null)
-                            runOnUiThread {
-                                Toast.makeText(
-                                    this,
-                                    "Failed to save image in gallery ...",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            }
-
-                        // delete a temporary file stored in the internal storage
-                        viewModel.deleteImages(imageFile!!)
-
-                    }).start()
-                } else
-                // Notice that images have been added to the gallery
-                    viewModel.notifyGallery(imageFile!!)
-
-            }
-            // After selecting an image from gallery.
-            takeGallery -> {
-                if (resultCode == Activity.RESULT_OK) {
-                    // convert uri of user selected image to file
-                    val file = viewModel.createImageFileAndroidQ(uri = data?.data!!)
-                    Glide.with(this).load(file).centerCrop().into(binding.imageContent)
+                } catch (e: Exception) {
+                    e.printStackTrace()
                 }
             }
         }
+        else {
+            Log.d("ActivityResult", "something wrong")
+        }
     }
 
-    /**
-     * Permission check. Use TedPermission library.
-     * */
-    private fun checkCameraPermission(type: ImageType) {
-        TedPermission.with(this)
-            .setPermissionListener(object : PermissionListener {
-                override fun onPermissionGranted() {
-                    when (type) {
-                        ImageType.CAMERA -> callCamera()
-                        ImageType.GALLERY -> callGallery()
-                    }
-                }
 
-                override fun onPermissionDenied(deniedPermissions: ArrayList<String>?) {
-
-                }
-
-
-            })
-            .setDeniedMessage("Please allow permissions to use this app. \uD83D\uDE2D\uD83D\uDE2D")
-            .apply {
-                when (type) {
-                    ImageType.CAMERA -> {
-                        // No storage permission required for accessing scoped storage from Android 10+
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q)
-                            setPermissions(Manifest.permission.CAMERA)
-                        else
-                            setPermissions(
-                                Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                                Manifest.permission.READ_EXTERNAL_STORAGE,
-                                Manifest.permission.CAMERA
-                            )
-                    }
-                    ImageType.GALLERY -> setPermissions(Manifest.permission.READ_EXTERNAL_STORAGE)
-                }
-            }
-            .check()
-    }
 }

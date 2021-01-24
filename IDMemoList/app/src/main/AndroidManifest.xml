@@ -10,15 +10,17 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.IDMemoList">
         <activity android:name=".AppPassWordMain">
+
+        </activity>
+        <activity android:name=".AppLockDial" />
+
+        <activity android:name=".UserpwCopy">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".AppLockDial" />
-
-        <activity android:name=".UserpwCopy" />
         <activity android:name=".DataListEdit" />
         <activity android:name=".DataList" />
         <activity android:name=".CategoryEdit" />

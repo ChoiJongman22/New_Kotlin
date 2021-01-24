@@ -1,5 +1,6 @@
 package com.jongman22.coffee
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -20,9 +21,11 @@ class CoffeeAdapter(val coffeeList: CoffeeData) :
 
     }
 
+    @SuppressLint("ResourceAsColor")
     override fun onBindViewHolder(holder: CoffeeViewHolder, position: Int) {
         holder.binding.coffeeItem.text = coffeeList.coffeeList[position].coffee
         holder.binding.coffeeItem.setOnClickListener {
+            it.setBackgroundColor(R.color.purple_500)
             val intent = Intent(holder.itemView?.context, CustomActivity::class.java)
             ContextCompat.startActivity(holder.itemView.context, intent, null)
         }
