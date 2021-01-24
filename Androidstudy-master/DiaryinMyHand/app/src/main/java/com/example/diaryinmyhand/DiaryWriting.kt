@@ -38,7 +38,7 @@ import java.util.ArrayList
 import kotlin.concurrent.timer
 
 class DiaryWriting : AppCompatActivity() {
-
+    private var Datadb:DataDB?=null
     private val OPEN_GALLERY=1
     private lateinit var binding: ActivityDiaryWritingBinding
 
@@ -49,8 +49,16 @@ class DiaryWriting : AppCompatActivity() {
 
         val view = binding.root
         setContentView(view)
+        Datadb=DataDB.getInstance(this)
 
 
+        val addRunnable = Runnable {
+            val newCat = Data()
+            newCat.dataTitle = binding.titleWrite.text.toString()
+            newCat.dataImage = binding.imageContent.imageAlpha
+            newCat.dataContent = binding.contentWrite.text.toString()
+            Datadb?.dataDao()?.insert(newCat)
+        }
 
 
         binding.Back.setOnClickListener {
@@ -59,12 +67,15 @@ class DiaryWriting : AppCompatActivity() {
         }
 
         binding.Ok.setOnClickListener {
-            val intent1 = Intent(this, MainActivity2::class.java)
-            startActivity(intent1)
+            val addThread = Thread(addRunnable)
+            addThread.start()
+
+            val i = Intent(this, MainActivity::class.java)
+            startActivity(i)
+            finish()
         }
         binding.Picture.setOnClickListener {
             openGallery()
-
         }
 
     }
@@ -96,6 +107,11 @@ class DiaryWriting : AppCompatActivity() {
         else {
             Log.d("ActivityResult", "something wrong")
         }
+    }
+
+    override fun onDestroy() {
+        DataDB.destroyInstance()
+        super.onDestroy()
     }
 
 
