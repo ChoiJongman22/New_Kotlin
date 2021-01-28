@@ -49,6 +49,7 @@ class DiaryWriting : AppCompatActivity() {
 
         val view = binding.root
         setContentView(view)
+
         Datadb=DataDB.getInstance(this)
 
 

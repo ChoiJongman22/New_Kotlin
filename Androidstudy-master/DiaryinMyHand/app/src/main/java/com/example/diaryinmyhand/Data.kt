@@ -14,4 +14,4 @@ class Data
 ){
         constructor():this(null,"",0,"")
 
-    }
+}
